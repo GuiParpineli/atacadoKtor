@@ -1,6 +1,7 @@
-package com.guiparpineli.dao
+package com.guiparpineli.dao.impl
 
 import com.guiparpineli.dao.DatabaseFactory.dbQuery
+import com.guiparpineli.dao.repository.DAOFacadeCustomer
 import com.guiparpineli.models.Customer
 import com.guiparpineli.models.Customers
 import kotlinx.coroutines.runBlocking

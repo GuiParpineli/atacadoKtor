@@ -1,9 +1,13 @@
 package com.guiparpineli.models
 
+import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 
-data class Order(val id: Int, val contents: List<Product>, val vendor: Vendor, val customer: Customer)
 
 object Orders : Table("order") {
-    val id = integer("id").autoIncrement()
+    val contents = reference("products",Products)
+    val vendor = reference("vendor", Vendors.id)
+    //val customer = reference("customer", Customer.id)
+    override val primaryKey = PrimaryKey(contents, vendor, name = "PK_Orders")
 }

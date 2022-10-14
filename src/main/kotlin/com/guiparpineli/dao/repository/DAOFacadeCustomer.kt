@@ -1,4 +1,4 @@
-package com.guiparpineli.dao
+package com.guiparpineli.dao.repository
 
 import com.guiparpineli.models.Customer
 

@@ -1,6 +1,7 @@
 package com.guiparpineli.dao
 
 import com.guiparpineli.models.Customers
+import com.guiparpineli.models.Products
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -15,7 +16,7 @@ object DatabaseFactory {
         val password = "1234"
         val database = Database.connect(jdbcURL, driverClassName, user, password)
         transaction(database) {
-            SchemaUtils.create(Customers)
+            SchemaUtils.create(Customers,Products)
         }
     }
 
