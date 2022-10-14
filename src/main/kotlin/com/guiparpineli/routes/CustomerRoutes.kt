@@ -7,6 +7,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.netty.handler.codec.http2.Http2PushPromiseFrame
 
 fun Route.customerRouting() {
     route("customer") {
@@ -41,6 +42,14 @@ fun Route.customerRouting() {
                 "cliente ${customer.razaoSocial} atualizado com sucesso",
                 status = HttpStatusCode.Accepted
             )
+        }
+        delete("{id}") {
+            val id = call.parameters["id"] ?: return@delete call.respond(HttpStatusCode.BadRequest)
+            if (dao.delete(id.toInt())) {
+                call.respondText("Usuario deletado com sucesso", status = HttpStatusCode.OK)
+            } else {
+                call.respondText("Falha ao excluir", status = HttpStatusCode.BadRequest)
+            }
         }
     }
 }
