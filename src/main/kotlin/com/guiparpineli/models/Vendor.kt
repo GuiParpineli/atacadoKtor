@@ -1,16 +1,22 @@
 package com.guiparpineli.models
 
-import kotlinx.serialization.Serializable
-import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.dao.IntEntity
+import org.jetbrains.exposed.dao.IntEntityClass
+import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.dao.id.IntIdTable
 
-@Serializable
-data class Vendor(val id: Int, val name: String, val cpf: String, val comission: Int)
-
-object Vendors : Table("vendor") {
-    val id = integer("id").autoIncrement()
+object Vendors : IntIdTable("vendor") {
     val name = varchar("name", 128)
     val cpf = char("cpf", 11).uniqueIndex()
     val comission = integer("comission")
+}
 
-    override val primaryKey = PrimaryKey(id)
+class Vendor(id: EntityID<Int>) : IntEntity(id) {
+
+    companion object : IntEntityClass<Vendor>(Vendors)
+
+    var name by Vendors.name
+    var cpf by Vendors.cpf
+    var comission by Vendors.comission
+
 }

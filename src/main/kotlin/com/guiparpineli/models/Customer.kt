@@ -1,17 +1,25 @@
 package com.guiparpineli.models
 
-import kotlinx.serialization.Serializable
-import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.dao.IntEntity
+import org.jetbrains.exposed.dao.IntEntityClass
+import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.dao.id.IntIdTable
 
-@Serializable
-data class Customer(val id: Int, val cnpj: String, val razaoSocial: String, val email: String, val password: String)
-
-object Customers : Table("customer") {
-    val id = integer("id").autoIncrement()
+object Customers : IntIdTable("customer") {
     val cnpj = varchar("cnpj", 128)
     val razaoSocial = varchar("razao_social", 128)
     val email = varchar("email", 128)
     val password = varchar("password", 128)
 
-    override val primaryKey  = PrimaryKey(id)
+}
+
+class Customer(id: EntityID<Int>) : IntEntity(id) {
+
+    companion object : IntEntityClass<Customer>(Customers)
+
+    var cnpj by Customers.cnpj
+    var razaoSocial by Customers.razaoSocial
+    var email by Customers.email
+    var password by Customers.password
+
 }

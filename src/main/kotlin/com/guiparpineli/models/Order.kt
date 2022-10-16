@@ -1,13 +1,16 @@
 package com.guiparpineli.models
 
+import org.jetbrains.exposed.dao.IntEntity
+import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
-import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.dao.id.IntIdTable
 
+object Orders : IntIdTable() {
 
-object Orders : Table("order") {
-    val contents = reference("products",Products)
-    val vendor = reference("vendor", Vendors.id)
-    //val customer = reference("customer", Customer.id)
-    override val primaryKey = PrimaryKey(contents, vendor, name = "PK_Orders")
+}
+
+class Order(id: EntityID<Int>) : IntEntity(id) {
+    companion object : IntEntityClass<Order>(Orders)
+
+    var products by Product via OrderProducts
 }
