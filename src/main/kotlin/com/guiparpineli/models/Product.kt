@@ -1,11 +1,9 @@
 package com.guiparpineli.models
 
-import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
-import org.jetbrains.exposed.sql.Table
 
 object Products : IntIdTable() {
     val name = varchar("name", 128)
@@ -23,8 +21,8 @@ class Product(id: EntityID<Int>) : IntEntity(id) {
     var name by Products.name
     var ncm by Products.ncm
     var category by Products.category
-    var inventory by Products.inventory
-    var pricePurchase by Products.inventory
+    var inventory by Products.pricePurchase
+    var pricePurchase by Products.price
     var price by Products.inventory
     var amount by Products.amount
 }
