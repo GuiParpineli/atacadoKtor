@@ -21,9 +21,9 @@ class Product(id: EntityID<Int>) : IntEntity(id) {
     var name by Products.name
     var ncm by Products.ncm
     var category by Products.category
-    var inventory by Products.pricePurchase
-    var pricePurchase by Products.price
-    var price by Products.inventory
+    var inventory by Products.inventory
+    var pricePurchase by Products.pricePurchase
+    var price by Products.price
     var amount by Products.amount
 }
 
