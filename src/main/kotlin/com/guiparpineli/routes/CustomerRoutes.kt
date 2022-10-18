@@ -2,6 +2,7 @@ package com.guiparpineli.routes
 
 
 import com.guiparpineli.dao.impl.DAOFacadeCustomerImpl
+import com.guiparpineli.dao.impl.dao
 import com.guiparpineli.models.Customer
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -11,7 +12,7 @@ import io.ktor.server.routing.*
 
 fun Route.customerRouting() {
 
-    val dao = DAOFacadeCustomerImpl()
+
 
     route("customer") {
 

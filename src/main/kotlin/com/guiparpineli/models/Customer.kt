@@ -29,4 +29,4 @@ class CustomerEntity(id: EntityID<Int>) : IntEntity(id) {
 }
 
 @Serializable
-data class Customer(val id: Int, val cnpj: String, val razaoSocoal: String, val email: String, val password: String)
+data class Customer(val id: Int, val cnpj: String, val razaoSocial: String, val email: String, val password: String)

@@ -1,23 +1,22 @@
 package com.guiparpineli.dao.impl
 
+import com.guiparpineli.dao.DatabaseFactory.dbQuery
 import com.guiparpineli.dao.repository.DAOFacade
 import com.guiparpineli.models.Customer
 import com.guiparpineli.models.CustomerEntity
-import com.guiparpineli.models.Customers.cnpj
-import com.guiparpineli.models.Customers.razaoSocial
-import io.ktor.websocket.*
+
 import kotlinx.coroutines.runBlocking
-import org.jetbrains.exposed.sql.*
+
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class DAOFacadeCustomeEntityImpl : DAOFacade<Customer> {
+class DAOFacadeCustomerImpl : DAOFacade<Customer> {
 
-    override suspend fun getAll(): List<Customer> = transaction {
+    override suspend fun getAll(): List<Customer> = dbQuery {
         CustomerEntity.all().map(CustomerEntity::toCustomer)
     }
 
 
-    override suspend fun getById(id: Int): Customer = transaction {
+    override suspend fun getById(id: Int): Customer = dbQuery {
         CustomerEntity[id].toCustomer()
     }
 
@@ -25,12 +24,12 @@ class DAOFacadeCustomeEntityImpl : DAOFacade<Customer> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun save(e: Customer) {
+    override suspend fun save(e: Customer): Unit = dbQuery{
         CustomerEntity.new {
             cnpj = e.cnpj
             email = e.email
             password = e.password
-            razaoSocial = e.razaoSocoal
+            razaoSocial = e.razaoSocial
         }
     }
 
@@ -42,7 +41,7 @@ class DAOFacadeCustomeEntityImpl : DAOFacade<Customer> {
 }
 
 
-val dao: DAOFacade<Customer> = DAOFacadeCustomeEntityImpl().apply {
+val dao: DAOFacade<Customer> = DAOFacadeCustomerImpl().apply {
     runBlocking {
         if (getAll().isEmpty()) {
             save(

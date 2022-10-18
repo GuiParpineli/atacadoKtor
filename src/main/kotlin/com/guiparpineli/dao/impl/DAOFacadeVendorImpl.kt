@@ -9,11 +9,16 @@ import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.SizedIterable
 
 class DAOFacadeVendorImpl : DAOFacade<Vendor> {
-    override suspend fun getAll(): SizedIterable<Vendor> {
+    override suspend fun getAll(): List<Vendor> {
         TODO("Not yet implemented")
     }
 
+
     override suspend fun getById(id: Int): Vendor? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun save(e: Vendor) {
         TODO("Not yet implemented")
     }
 
@@ -25,9 +30,6 @@ class DAOFacadeVendorImpl : DAOFacade<Vendor> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun save(Vendor: Vendor): Vendor? {
-        TODO("Not yet implemented")
-    }
 
 
 }
