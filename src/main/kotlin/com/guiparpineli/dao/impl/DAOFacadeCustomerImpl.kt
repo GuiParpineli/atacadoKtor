@@ -1,61 +1,48 @@
 package com.guiparpineli.dao.impl
 
-import com.guiparpineli.dao.DatabaseFactory.dbQuery
-import com.guiparpineli.dao.repository.DAOFacadeCustomer
+import com.guiparpineli.dao.repository.DAOFacade
 import com.guiparpineli.models.Customer
-import com.guiparpineli.models.Customers
+import com.guiparpineli.models.CustomerEntity
+import com.guiparpineli.models.Customers.cnpj
+import com.guiparpineli.models.Customers.razaoSocial
+import io.ktor.websocket.*
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.transactions.transaction
 
-class DAOFacadeCustomerImpl : DAOFacadeCustomer {
+class DAOFacadeCustomeEntityImpl : DAOFacade<Customer> {
 
-    private fun resultRowToCustomer(row: ResultRow) = Customer(
-        id = row[Customers.id],
-        cnpj = row[Customers.cnpj],
-        razaoSocial = row[Customers.razaoSocial],
-        email = row[Customers.email],
-        password = row[Customers.password],
-    )
-
-    override suspend fun getAll(): List<Customer> = dbQuery {
-        Customers.selectAll().map(::resultRowToCustomer)
+    override suspend fun getAll(): List<Customer> = transaction {
+        CustomerEntity.all().map(CustomerEntity::toCustomer)
     }
 
-    override suspend fun getById(id: Int): Customer? = dbQuery {
-        Customers
-            .select { Customers.id eq id }
-            .map(::resultRowToCustomer)
-            .singleOrNull()
+
+    override suspend fun getById(id: Int): Customer = transaction {
+        CustomerEntity[id].toCustomer()
     }
 
-    override suspend fun save(customer: Customer): Customer? =
-        dbQuery {
-            val insertStatement = Customers.insert {
-                it[cnpj] = customer.cnpj
-                it[razaoSocial] = customer.razaoSocial
-                it[email] = customer.email
-                it[password] = customer.password
-            }
-            insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToCustomer)
+    override suspend fun update(e: Customer): Customer {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun save(e: Customer) {
+        CustomerEntity.new {
+            cnpj = e.cnpj
+            email = e.email
+            password = e.password
+            razaoSocial = e.razaoSocoal
         }
-
-    override suspend fun update(customer: Customer): Boolean =
-        dbQuery {
-            Customers.update({ Customers.id eq customer.id }) {
-                it[cnpj] = customer.cnpj
-                it[razaoSocial] = customer.razaoSocial
-                it[email] = customer.email
-                it[password] = customer.password
-            } > 0
-        }
-
-    override suspend fun delete(id: Int): Boolean = dbQuery {
-        Customers.deleteWhere { Customers.id eq id } > 0
     }
+
+    override suspend fun delete(id: Int) = transaction {
+        TODO("Not yet implemented")
+    }
+
 
 }
 
-val dao: DAOFacadeCustomer = DAOFacadeCustomerImpl().apply {
+
+val dao: DAOFacade<Customer> = DAOFacadeCustomeEntityImpl().apply {
     runBlocking {
         if (getAll().isEmpty()) {
             save(
@@ -70,4 +57,5 @@ val dao: DAOFacadeCustomer = DAOFacadeCustomerImpl().apply {
         }
     }
 }
+
 

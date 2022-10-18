@@ -1,5 +1,6 @@
 package com.guiparpineli.dao
 
+import com.guiparpineli.models.Customer
 import com.guiparpineli.models.Customers
 import com.guiparpineli.models.Products
 import kotlinx.coroutines.Dispatchers
@@ -16,10 +17,11 @@ object DatabaseFactory {
         val password = "1234"
         val database = Database.connect(jdbcURL, driverClassName, user, password)
         transaction(database) {
-            SchemaUtils.create(Customers,Products)
+            SchemaUtils.create(Customers, Products)
         }
     }
 
     suspend fun <T> dbQuery(block: suspend () -> T): T =
         newSuspendedTransaction(Dispatchers.IO) { block() }
+
 }
