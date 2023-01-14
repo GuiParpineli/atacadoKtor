@@ -13,7 +13,6 @@ import io.ktor.server.routing.*
 fun Route.customerRouting() {
 
 
-
     route("customer") {
 
         get { call.respond(dao.getAll()) }
