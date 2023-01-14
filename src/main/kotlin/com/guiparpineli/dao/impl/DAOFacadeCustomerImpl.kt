@@ -4,6 +4,7 @@ import com.guiparpineli.dao.DatabaseFactory.dbQuery
 import com.guiparpineli.dao.repository.DAOFacade
 import com.guiparpineli.models.Customer
 import com.guiparpineli.models.CustomerEntity
+import com.guiparpineli.models.Customers
 
 import kotlinx.coroutines.runBlocking
 
@@ -20,8 +21,8 @@ class DAOFacadeCustomerImpl : DAOFacade<Customer> {
         CustomerEntity[id].toCustomer()
     }
 
-    override suspend fun update(e: Customer): Customer {
-        TODO("Not yet implemented")
+    override suspend fun update(e: Customer): Customer = dbQuery {
+        TODO()
     }
 
     override suspend fun save(e: Customer): Unit = dbQuery{
@@ -33,8 +34,9 @@ class DAOFacadeCustomerImpl : DAOFacade<Customer> {
         }
     }
 
-    override suspend fun delete(id: Int) = transaction {
-        TODO("Not yet implemented")
+    override suspend fun delete(id: Int) = dbQuery {
+        CustomerEntity[id].delete()
+        return@dbQuery true
     }
 
 
